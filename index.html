@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="ir-site-verification-token" value="1601135623">
+  <title>Brennan's Games & Projects</title>
+  <meta name="description" content="Games and interactive projects by Brennan Hatton - Chess, JudgeGPT, AI experiments, Unity games and more.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e12;
+      --surface: #18181f;
+      --surface-hover: #222230;
+      --border: #2a2a3a;
+      --text: #e8e8f0;
+      --text-muted: #8888a0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --gradient-1: #6c5ce7;
+      --gradient-2: #00cec9;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Navigation ── */
+    .nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-brand {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-brand:hover { text-decoration: none; color: var(--accent-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { background: var(--surface-hover); color: var(--text); text-decoration: none; }
+    .nav-links a.active { color: var(--accent-light); }
+
+    /* Dropdown */
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown > a::after {
+      content: ' \25BE';
+      font-size: 0.7em;
+    }
+
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0;
+      min-width: 200px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      z-index: 200;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+
+    .nav-dropdown-menu a {
+      display: block;
+      padding: 0.5rem 1rem;
+      border-radius: 0;
+      font-size: 0.85rem;
+    }
+
+    /* Hamburger */
+    .nav-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        padding: 1rem 1.5rem;
+        gap: 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 0.6rem 0; }
+      .nav-dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        padding-left: 1rem;
+      }
+      .nav-dropdown:hover .nav-dropdown-menu { display: none; }
+      .nav-dropdown.open .nav-dropdown-menu { display: block; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 4rem 1.5rem 3rem;
+      background: linear-gradient(135deg, rgba(108,92,231,0.1) 0%, rgba(0,206,201,0.08) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Section ── */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    .section h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    /* ── Project Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 32px rgba(108,92,231,0.15);
+    }
+
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: var(--accent-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-body h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .card-body h3 a { color: var(--text); }
+    .card-body h3 a:hover { color: var(--accent-light); text-decoration: none; }
+
+    .card-body p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      flex: 1;
+      margin-bottom: 1rem;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      background: rgba(108,92,231,0.15);
+      color: var(--accent-light);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .card-link {
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+      transition: background 0.2s;
+      margin-top: auto;
+    }
+    .card-link:hover { background: #5a4bd6; text-decoration: none; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer a { color: var(--accent-light); }
+
+    /* ── Gradients for card thumbnails ── */
+    .grad-chess    { background: linear-gradient(135deg, #2d1b69, #1a1a2e); }
+    .grad-judge    { background: linear-gradient(135deg, #1b2838, #2d1b38); }
+    .grad-story    { background: linear-gradient(135deg, #1b3828, #1b2838); }
+    .grad-hoon     { background: linear-gradient(135deg, #382d1b, #1b2838); }
+    .grad-freedive { background: linear-gradient(135deg, #0b3d5e, #1b2838); }
+    .grad-unfake   { background: linear-gradient(135deg, #3d0b2e, #1b2838); }
+    .grad-love     { background: linear-gradient(135deg, #5e0b3d, #2d1b38); }
+    .grad-mindful  { background: linear-gradient(135deg, #1b382d, #1b2838); }
+    .grad-eleven   { background: linear-gradient(135deg, #2d381b, #1b2838); }
+    .grad-display  { background: linear-gradient(135deg, #381b2d, #1b2838); }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/">brennan.games</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="https://life.brennanhatton.com/brennan-hatton">About</a></li>
+      <li><a href="https://life.brennanhatton.com/freediving">Freediving</a></li>
+      <li><a href="https://life.brennanhatton.com/leading-vr">Leading VR</a></li>
+      <li><a href="/" class="active">Games</a></li>
+      <li class="nav-dropdown">
+        <a href="https://life.brennanhatton.com/more/art">Art</a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="https://life.brennanhatton.com/more/art/virtual-reality-paintings">VR Paintings</a></li>
+          <li><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences">VR Experiences</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown">
+        <a href="https://life.brennanhatton.com/more/sports">Sports</a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="https://life.brennanhatton.com/more/sports/free-diving">Free Diving</a></li>
+          <li><a href="https://life.brennanhatton.com/more/sports/climbing">Climbing</a></li>
+          <li><a href="https://life.brennanhatton.com/more/sports/surfing">Surfing</a></li>
+          <li><a href="https://life.brennanhatton.com/more/sports/hiking">Hiking</a></li>
+          <li><a href="https://life.brennanhatton.com/more/sports/skateboarding">Skateboarding</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown">
+        <a href="https://life.brennanhatton.com/more/career">Career</a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="https://life.brennanhatton.com/more/career/software-development">Software Dev</a></li>
+          <li><a href="https://life.brennanhatton.com/more/career/organisations">Organisations</a></li>
+          <li><a href="https://life.brennanhatton.com/more/career/press">Press</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown">
+        <a href="https://life.brennanhatton.com/more/travel">Travel</a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="https://life.brennanhatton.com/more/travel/places-i-have-lived">Places Lived</a></li>
+          <li><a href="https://life.brennanhatton.com/more/travel/roadtrips">Roadtrips</a></li>
+        </ul>
+      </li>
+      <li><a href="https://life.brennanhatton.com/more/mission">Mission</a></li>
+      <li><a href="https://life.brennanhatton.com/more/people/connect">Connect</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<header class="hero">
+  <h1>Games & Projects</h1>
+  <p>Interactive games, AI experiments, and creative projects by Brennan Hatton.</p>
+</header>
+
+<!-- ── Games ── -->
+<section class="section">
+  <h2>Games</h2>
+  <div class="grid">
+
+    <!-- Chess -->
+    <article class="card">
+      <div class="card-thumb grad-chess">&#9822;</div>
+      <div class="card-body">
+        <h3><a href="/chess/">Chess</a></h3>
+        <p>Play chess against a Stockfish-powered AI with adjustable ELO (100-3200). Features Chess960, multiple art styles, combat animations, timers, and game history.</p>
+        <div class="card-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Stockfish</span>
+          <span class="tag">Chess960</span>
+          <span class="tag">WASM</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- JudgeGPT -->
+    <article class="card">
+      <div class="card-thumb grad-judge">&#9878;</div>
+      <div class="card-body">
+        <h3><a href="/JudgeGPT/">JudgeGPT</a></h3>
+        <p>A multiplayer AI courtroom game where an AI judge decides your fate. Features live chat, AI-generated voice narration, case archives, and spectator mode.</p>
+        <div class="card-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Multiplayer</span>
+          <span class="tag">GPT</span>
+          <span class="tag">Voice</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Australian Dream -->
+    <article class="card">
+      <div class="card-thumb grad-hoon">&#127968;</div>
+      <div class="card-body">
+        <h3><a href="/Hoon/">Australian Dream</a></h3>
+        <p>A Unity WebGL game exploring the Australian Dream. Built with Unity and playable directly in the browser.</p>
+        <div class="card-tags">
+          <span class="tag">Unity</span>
+          <span class="tag">WebGL</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Freediving Game -->
+    <article class="card">
+      <div class="card-thumb grad-freedive">&#127754;</div>
+      <div class="card-body">
+        <h3><a href="/WebBuil1/">Freediving Game</a></h3>
+        <p>A Unity WebGL freediving experience. Dive deep and explore the underwater world in your browser.</p>
+        <div class="card-tags">
+          <span class="tag">Unity</span>
+          <span class="tag">WebGL</span>
+          <span class="tag">Freediving</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- StoryGame -->
+    <article class="card">
+      <div class="card-thumb grad-story">&#128214;</div>
+      <div class="card-body">
+        <h3><a href="/StoryGame/">StoryGame</a></h3>
+        <p>An interactive scrolling story experience with dynamic text and animation effects.</p>
+        <div class="card-tags">
+          <span class="tag">Interactive</span>
+          <span class="tag">Story</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Dungeon Train (external) -->
+    <article class="card">
+      <div class="card-thumb grad-chess">&#128123;</div>
+      <div class="card-body">
+        <h3><a href="http://dungeontrain.com">Dungeon Train</a></h3>
+        <p>An adventure game set aboard a dungeon train. Fight monsters and explore as you ride the rails.</p>
+        <div class="card-tags">
+          <span class="tag">Adventure</span>
+          <span class="tag">External</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Find My Phone -->
+    <article class="card">
+      <div class="card-thumb grad-judge">&#128241;</div>
+      <div class="card-body">
+        <h3><a href="https://www.oculus.com/experiences/quest/3411804805613793/">Find My Phone</a></h3>
+        <p>A VR game for Meta Quest where you search for your lost phone. Available on the Oculus Store.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Meta Quest</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Undead Mayhem -->
+    <article class="card">
+      <div class="card-thumb grad-story">&#129503;</div>
+      <div class="card-body">
+        <h3><a href="https://life.brennanhatton.com/more/art/games/undead-mayhem">Undead Mayhem</a></h3>
+        <p>Survive waves of the undead in this action-packed game.</p>
+        <div class="card-tags">
+          <span class="tag">Action</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Hot House -->
+    <article class="card">
+      <div class="card-thumb grad-hoon">&#127793;</div>
+      <div class="card-body">
+        <h3><a href="https://life.brennanhatton.com/more/art/games/hot-house">Hot House</a></h3>
+        <p>A creative game project exploring the theme of a hot house.</p>
+        <div class="card-tags">
+          <span class="tag">Creative</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ── AI & Creative Projects ── -->
+<section class="section">
+  <h2>AI & Creative Projects</h2>
+  <div class="grid">
+
+    <!-- UnFake -->
+    <article class="card">
+      <div class="card-thumb grad-unfake">&#128269;</div>
+      <div class="card-body">
+        <h3><a href="/Unfake/">UnFake</a></h3>
+        <p>An AI-powered tool for detecting and analysing misinformation. Features an admin interface and viewer with real-time progress tracking.</p>
+        <div class="card-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Misinformation</span>
+          <span class="tag">Tool</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- LoveLanguageModel -->
+    <article class="card">
+      <div class="card-thumb grad-love">&#10084;</div>
+      <div class="card-body">
+        <h3><a href="/LoveLanguageModel/">Love Language Model</a></h3>
+        <p>An AI-powered love language assessment tool. Discover and understand your love language through an interactive experience.</p>
+        <div class="card-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Interactive</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- MindfulAI -->
+    <article class="card">
+      <div class="card-thumb grad-mindful">&#129502;</div>
+      <div class="card-body">
+        <h3><a href="/MindfulAI/">MindfulAI</a></h3>
+        <p>A mindfulness and meditation tool powered by AI. Uses speech recognition and text-to-speech for guided experiences.</p>
+        <div class="card-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Mindfulness</span>
+          <span class="tag">Speech</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ElevenLabs Demo -->
+    <article class="card">
+      <div class="card-thumb grad-eleven">&#128483;</div>
+      <div class="card-body">
+        <h3><a href="/ElevenLabs/">ElevenLabs TTS Demo</a></h3>
+        <p>A text-to-speech demo using the ElevenLabs API. Type text and hear it spoken with realistic AI voices.</p>
+        <div class="card-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Voice</span>
+          <span class="tag">ElevenLabs</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- AI Roleplaying -->
+    <article class="card">
+      <div class="card-thumb grad-freedive">&#127917;</div>
+      <div class="card-body">
+        <h3><a href="https://life.brennanhatton.com/more/art/games/ai-roleplaying">AI Roleplaying</a></h3>
+        <p>Explorations in AI-powered roleplaying experiences and interactive storytelling.</p>
+        <div class="card-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Roleplay</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ── VR Experiences ── -->
+<section class="section">
+  <h2>VR Experiences</h2>
+  <div class="grid">
+
+    <article class="card">
+      <div class="card-thumb grad-chess">&#129704;</div>
+      <div class="card-body">
+        <h3><a href="https://partner.equalreality.com/training">Equal Reality Training</a></h3>
+        <p>VR training experiences for empathy and understanding, built with Equal Reality.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Training</span>
+          <span class="tag">Equal Reality</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-thumb grad-judge">&#127912;</div>
+      <div class="card-body">
+        <h3><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/thetransrealityballpit">The Transreality Ball Pit</a></h3>
+        <p>A mixed-reality installation blending physical and virtual ball pits.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Installation</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-thumb grad-hoon">&#127758;</div>
+      <div class="card-body">
+        <h3><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/marco-polo">Marco Polo</a></h3>
+        <p>A VR experience inspired by the classic game of Marco Polo.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Social</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-thumb grad-mindful">&#127861;</div>
+      <div class="card-body">
+        <h3><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/tearism">Tea(R)ism</a></h3>
+        <p>A contemplative VR tea ceremony experience.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Art</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-thumb grad-unfake">&#9881;</div>
+      <div class="card-body">
+        <h3><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/organic-and-mechanical-space">Organic/Mechanical Space</a></h3>
+        <p>A VR exploration of organic and mechanical environments.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Art</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-thumb grad-freedive">&#127759;</div>
+      <div class="card-body">
+        <h3><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/antipodes-vr">Antipodes VR</a></h3>
+        <p>A virtual reality experience exploring the concept of antipodal points on Earth.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Exploration</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <p>
+    <a href="https://life.brennanhatton.com">life.brennanhatton.com</a> &middot;
+    <a href="https://life.brennanhatton.com/more/people/connect">Connect</a> &middot;
+    <a href="https://life.brennanhatton.com/more/career">Career</a> &middot;
+    <a href="https://life.brennanhatton.com/more/mission">Mission</a>
+  </p>
+  <p style="margin-top: 0.5rem;">&copy; Brennan Hatton</p>
+</footer>
+
+</body>
+</html>
