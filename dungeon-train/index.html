@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dungeon Train &mdash; A Free Minecraft Mod | Brennan.Games</title>
+  <meta name="description" content="Dungeon Train is a free Minecraft mod for NeoForge 1.21.1 by Brennan Hatton, published on CurseForge and Modrinth. Players can make voluntary contributions to support continued development.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e12;
+      --surface: #18181f;
+      --surface-hover: #222230;
+      --border: #2a2a3a;
+      --text: #e8e8f0;
+      --text-muted: #8888a0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --gradient-1: #6c5ce7;
+      --gradient-2: #00cec9;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Navigation ── */
+    .nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-brand {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-brand:hover { text-decoration: none; color: var(--accent-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { background: var(--surface-hover); color: var(--text); text-decoration: none; }
+    .nav-links a.active { color: var(--accent-light); }
+
+    /* Dropdown */
+    .nav-dropdown { position: relative; }
+
+    .nav-dropdown > a::after {
+      content: ' \25BE';
+      font-size: 0.7em;
+    }
+
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0;
+      min-width: 200px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      z-index: 200;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+
+    .nav-dropdown-menu a {
+      display: block;
+      padding: 0.5rem 1rem;
+      border-radius: 0;
+      font-size: 0.85rem;
+    }
+
+    /* Hamburger */
+    .nav-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        padding: 1rem 1.5rem;
+        gap: 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 0.6rem 0; }
+      .nav-dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        padding-left: 1rem;
+      }
+      .nav-dropdown:hover .nav-dropdown-menu { display: none; }
+      .nav-dropdown.open .nav-dropdown-menu { display: block; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 4rem 1.5rem 3rem;
+      background: linear-gradient(135deg, rgba(108,92,231,0.1) 0%, rgba(0,206,201,0.08) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .hero .hero-zh {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+
+    /* ── Section ── */
+    .section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    .section h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 1.75rem 0 0.5rem;
+    }
+
+    .section p { margin-bottom: 1rem; }
+
+    .section ul {
+      margin: 0 0 1rem 1.25rem;
+      color: var(--text-muted);
+    }
+    .section li { margin-bottom: 0.4rem; }
+
+    .muted { color: var(--text-muted); }
+
+    .zh {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: -0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ── Fact panel ── */
+    .facts {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .facts dl {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 0.5rem 1.5rem;
+      font-size: 0.95rem;
+    }
+    .facts dt { color: var(--text-muted); }
+    .facts dd { color: var(--text); }
+
+    @media (max-width: 560px) {
+      .facts dl { grid-template-columns: 1fr; gap: 0.15rem; }
+      .facts dd { margin-bottom: 0.6rem; }
+    }
+
+    /* ── Buttons ── */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.4rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #5a4bd6; text-decoration: none; }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: var(--surface-hover); }
+
+    /* ── Contribution options ── */
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .option {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .option h4 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .option-zh { font-weight: 500; font-size: 0.9rem; color: var(--text-muted); }
+
+    .option-where {
+      color: var(--accent-light);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.75rem;
+    }
+
+    .option p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .option .btn { margin-top: auto; }
+
+    /* ── Callout ── */
+    .callout {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 1.1rem 1.35rem;
+      margin: 1.5rem 0;
+    }
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer a { color: var(--accent-light); }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/">brennan.games</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="https://life.brennanhatton.com/brennan-hatton">About</a></li>
+      <li><a href="https://life.brennanhatton.com/freediving">Freediving</a></li>
+      <li><a href="https://life.brennanhatton.com/leading-vr">Leading VR</a></li>
+      <li><a href="/" class="active">Games</a></li>
+      <li class="nav-dropdown">
+        <a href="https://life.brennanhatton.com/more/art">Art</a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="https://life.brennanhatton.com/more/art/virtual-reality-paintings">VR Paintings</a></li>
+          <li><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences">VR Experiences</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown">
+        <a href="https://life.brennanhatton.com/more/sports">Sports</a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="https://life.brennanhatton.com/more/sports/free-diving">Free Diving</a></li>
+          <li><a href="https://life.brennanhatton.com/more/sports/climbing">Climbing</a></li>
+          <li><a href="https://life.brennanhatton.com/more/sports/surfing">Surfing</a></li>
+          <li><a href="https://life.brennanhatton.com/more/sports/hiking">Hiking</a></li>
+          <li><a href="https://life.brennanhatton.com/more/sports/skateboarding">Skateboarding</a></li>
+        </ul>
+      </li>
+      <li class="nav-dropdown">
+        <a href="https://life.brennanhatton.com/more/career">Career</a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="https://life.brennanhatton.com/more/career/software-development">Software Dev</a></li>
+          <li><a href="https://life.brennanhatton.com/more/career/organisations">Organisations</a></li>
+          <li><a href="https://life.brennanhatton.com/more/career/press">Press</a></li>
+        </ul>
+      </li>
+      <li><a href="https://life.brennanhatton.com/more/mission">Mission</a></li>
+      <li><a href="https://life.brennanhatton.com/more/people/connect">Connect</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<header class="hero">
+  <h1>Dungeon Train</h1>
+  <p>
+    A free Minecraft mod by Brennan Hatton. Ride an endless train through procedurally
+    generated dungeons.
+    <span class="hero-zh">《地牢列车》&mdash; 由 Brennan Hatton 开发的免费 Minecraft 模组。</span>
+  </p>
+</header>
+
+<!-- ── What it is ── -->
+<section class="section">
+  <h2>What Dungeon Train is</h2>
+
+  <p>
+    Dungeon Train is a mod for <strong>Minecraft: Java Edition</strong>, built for
+    <strong>NeoForge 1.21.1</strong>. It adds a moving train that hosts procedurally
+    generated dungeons &mdash; you fight your way carriage to carriage as the train
+    rolls on. It is a Minecraft port of the original
+    <a href="https://brennanhatton.itch.io/dungeontrain">Dungeon Train</a> game.
+  </p>
+
+  <p>
+    The mod is <strong>free to download and free to play</strong>. It is published on the
+    two standard Minecraft mod platforms, where you can see its release history,
+    download counts, and player reviews:
+  </p>
+
+  <div class="btn-row">
+    <a class="btn" href="https://www.curseforge.com/minecraft/mc-mods/dungeon-train">Download on CurseForge</a>
+    <a class="btn" href="https://modrinth.com/mod/dungeon-train">Download on Modrinth</a>
+  </div>
+
+  <div class="facts">
+    <dl>
+      <dt>Product</dt>
+      <dd>Dungeon Train &mdash; a Minecraft mod</dd>
+
+      <dt>Platform</dt>
+      <dd>Minecraft: Java Edition, NeoForge 1.21.1</dd>
+
+      <dt>Price</dt>
+      <dd>Free. No paid version, no paid content.</dd>
+
+      <dt>Published on</dt>
+      <dd>
+        <a href="https://www.curseforge.com/minecraft/mc-mods/dungeon-train">CurseForge</a> &middot;
+        <a href="https://modrinth.com/mod/dungeon-train">Modrinth</a>
+      </dd>
+
+      <dt>Modpack</dt>
+      <dd>
+        <a href="https://modrinth.com/modpack/dungeon-train-pack-a-lore-rich-roguelite-adventure">Dungeon Train Pack (Modrinth)</a> &middot;
+        <a href="https://www.curseforge.com/minecraft/modpacks/dungeon-train">CurseForge</a>
+      </dd>
+
+      <dt>Developer</dt>
+      <dd>Brennan Hatton, Australia</dd>
+    </dl>
+  </div>
+
+  <p class="muted">
+    Minecraft is a trademark of Mojang Studios. Dungeon Train is an independent,
+    unofficial mod and is not affiliated with or endorsed by Mojang Studios or Microsoft.
+  </p>
+</section>
+
+<!-- ── Support development ── -->
+<section class="section" id="support">
+  <h2>Support development</h2>
+
+  <p>
+    Dungeon Train is developed by one person and given away for free. Players around the
+    world have asked for a way to contribute towards its continued development, so this
+    page sets out how that works and what it does and does not mean.
+  </p>
+  <p class="zh">
+    《地牢列车》由一人开发并免费提供。本页面说明玩家如何自愿支持它的持续开发。
+  </p>
+
+  <h3>What contributions pay for</h3>
+  <ul>
+    <li>Ongoing development time &mdash; new content, bug fixes, and Minecraft version updates</li>
+    <li>Server and hosting costs for the mod's online features</li>
+    <li>Art, sound, and other assets</li>
+  </ul>
+
+  <h3>What contributions are not</h3>
+  <p>
+    <strong>Nothing is being sold.</strong> A contribution does not buy the mod, unlock
+    content, grant in-game items or advantages, or provide any goods or services in
+    return. The mod is free to everyone, whether or not they contribute, and always
+    will be. Contributions are entirely voluntary.
+  </p>
+  <p class="zh">
+    <strong>本页面不出售任何商品。</strong>捐助不会解锁内容、不会提供游戏内物品或优势。
+    无论是否捐助，本模组对所有玩家始终免费。捐助完全出于自愿。
+  </p>
+
+  <h3>How to contribute</h3>
+  <p>
+    Players anywhere in the world can contribute. Pick whichever option works where you
+    are &mdash; the same in-game support button offers these too. Brennan.Games never
+    receives or stores your payment details; each provider handles them directly.
+  </p>
+
+  <div class="options">
+
+    <article class="option">
+      <h4>Patreon</h4>
+      <p class="option-where">Worldwide &middot; monthly or one-off</p>
+      <p>
+        The main way to support ongoing development, with occasional development
+        updates for supporters.
+      </p>
+      <a class="btn" href="https://www.patreon.com/brennanhatton">Support on Patreon</a>
+    </article>
+
+    <article class="option">
+      <h4>Revolut</h4>
+      <p class="option-where">Worldwide &middot; one-off</p>
+      <p>
+        A direct one-off contribution, no account or subscription needed. Choose your
+        own amount and currency.
+      </p>
+      <a class="btn" href="https://revolut.me/brennacg7?note=Dungeon%20Train">Contribute via Revolut</a>
+    </article>
+
+    <article class="option">
+      <h4>Alipay &amp; WeChat Pay<br><span class="option-zh">支付宝 / 微信支付</span></h4>
+      <p class="option-where">Mainland China &middot; one-off</p>
+      <p>
+        For players in mainland China, where Patreon and Revolut are not reachable.
+        Processed by Stripe.
+      </p>
+      <p class="zh">
+        面向中国大陆玩家，支付由 Stripe 处理。
+      </p>
+      <a class="btn" href="STRIPE_PAYMENT_LINK_URL">Contribute &mdash; 支持开发</a>
+    </article>
+
+  </div>
+</section>
+
+<!-- ── Policy ── -->
+<section class="section" id="policy">
+  <h2>Contributions &amp; refunds</h2>
+
+  <div class="callout">
+    <p>
+      Contributions are <strong>voluntary and non-refundable</strong>, as no goods or
+      services are provided in exchange. If a payment was made in error, is duplicated,
+      or you believe your payment method was used without your permission, contact
+      <a href="mailto:Brennan@brennanhatton.com">Brennan@brennanhatton.com</a> and it
+      will be refunded.
+    </p>
+    <p class="zh" style="margin-top:0.75rem;">
+      捐助为<strong>自愿性质，原则上不予退款</strong>，因为并未提供任何商品或服务作为交换。
+      如果付款有误、重复扣款，或您认为付款方式被未经授权使用，请联系
+      <a href="mailto:Brennan@brennanhatton.com">Brennan@brennanhatton.com</a>，我们将予以退款。
+    </p>
+  </div>
+
+  <p>
+    Revolut, Alipay, and WeChat Pay contributions are one-off payments with no recurring
+    charge. Patreon supporters may choose a monthly pledge, which can be cancelled at
+    any time from your Patreon account. Payments are handled by the provider you choose
+    &mdash; Patreon, Revolut, or Stripe &mdash; and your card or wallet details are
+    never seen or stored by Brennan.Games.
+  </p>
+
+  <h3>Privacy</h3>
+  <p>
+    Brennan.Games does not collect personal information from this page. If you
+    contribute, your chosen provider (Patreon, Revolut, or Stripe) processes the payment
+    and shares only what is needed to confirm it, such as the amount, currency, and
+    payment method type. If you email support,
+    your message and address are used only to answer you. Nothing is sold or shared
+    with third parties.
+  </p>
+
+  <h3>Contact</h3>
+  <p>
+    Brennan Hatton &mdash; Australia<br>
+    Email: <a href="mailto:Brennan@brennanhatton.com">Brennan@brennanhatton.com</a><br>
+    <span class="muted">Enquiries are answered within a few business days.</span>
+  </p>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <p>
+    <a href="/">brennan.games</a> &middot;
+    <a href="https://life.brennanhatton.com">life.brennanhatton.com</a> &middot;
+    <a href="mailto:Brennan@brennanhatton.com">Contact</a>
+  </p>
+  <p style="margin-top: 0.5rem;">&copy; Brennan Hatton</p>
+</footer>
+
+</body>
+</html>
