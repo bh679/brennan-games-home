@@ -223,6 +223,34 @@
 
     .section-intro { color: var(--text-muted); margin: -0.5rem 0 1.25rem; max-width: 46rem; }
 
+    .archive { color: var(--text-muted); font-size: 0.9rem; margin-top: 1.25rem; max-width: 60rem; }
+    .archive b { color: var(--text); }
+
+    /* ── Video cards + player ── */
+    button.card-thumb { border: 0; padding: 0; cursor: pointer; background: none; font: inherit; }
+    .video-thumb .play {
+      position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px 0 0 -28px;
+      border-radius: 50%; background: rgba(14,14,18,0.75); border: 2px solid rgba(255,255,255,0.85);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .video-thumb .play::after {
+      content: ""; position: absolute; left: 21px; top: 15px;
+      border-style: solid; border-width: 12px 0 12px 19px; border-color: transparent transparent transparent #fff;
+    }
+    .video-thumb:hover .play, .video-thumb:focus-visible .play { transform: scale(1.1); background: var(--accent); }
+    button.video-link { background: none; border: 0; padding: 0; font: inherit; color: var(--accent-light); cursor: pointer; text-align: left; }
+    button.video-link:hover { text-decoration: underline; }
+    .card-body h3 button.video-link { color: var(--text); font-weight: inherit; }
+    .card-body h3 button.video-link:hover { color: var(--accent-light); }
+    dialog.player { margin: auto; padding: 0; border: 0; background: transparent; width: min(960px, 92vw); max-width: none; max-height: none; overflow: visible; }
+    dialog.player::backdrop { background: rgba(5,5,8,0.85); }
+    dialog.player .frame { position: relative; aspect-ratio: 16/9; background: #000; border-radius: 10px; overflow: hidden; }
+    dialog.player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    dialog.player .close {
+      position: absolute; top: -44px; right: 0; width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 1.3rem; line-height: 1; cursor: pointer;
+    }
+
     /* Menus hidden for now — remove this rule to bring them back. */
     .nav-links, .nav-toggle { display: none !important; }
 
@@ -445,10 +473,86 @@
     </article>
 
     <!-- Undead Mayhem -->
+    <!-- Hot House -->
     <article class="card">
-      <a class="card-thumb" href="https://life.brennanhatton.com/more/art/games/undead-mayhem"><img src="images/undead-mayhem.jpg" alt="Undead Mayhem title screen" loading="lazy"></a>
+      <button type="button" class="card-thumb video-thumb" data-video="yt:CQR4wsZx0eA" aria-label="Play video: Castle Rush"><img src="images/castle-rush.jpg" alt="Castle Rush VR versus reality game" loading="lazy"><span class="play" aria-hidden="true"></span></button>
       <div class="card-body">
-        <h3><a href="https://life.brennanhatton.com/more/art/games/undead-mayhem">Undead Mayhem</a></h3>
+        <h3><button type="button" class="video-link" data-video="yt:CQR4wsZx0eA">Castle Rush</button></h3>
+        <p>Virtual reality vs reality: up to three VR archers defend a castle while 30+ people in the room attack them from their phones. Played in pubs, malls and at Google&#x27;s Sydney Christmas party.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Mobile</span>
+          <span class="tag">Party</span>
+          <span class="tag">2015</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ── Game Jams & Early Games ── -->
+<section class="section" id="game-jams">
+  <h2>Game Jams &amp; Early Games</h2>
+  <p class="section-intro">I've been making games since I was 14. Some took a few hours, others half a decade. <a href="https://life.brennanhatton.com/more/art/games" target="_blank" rel="noopener">More on my games page &rarr;</a></p>
+  <div class="grid">
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:pwViA8IZpjo" aria-label="Play video: Detective GPT"><img src="images/detective-gpt.jpg" alt="Detective GPT dinner-party murder scene in VR" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:pwViA8IZpjo">Detective GPT</button></h3>
+        <p>A multiplayer VR murder mystery party game. One player murders another, then Detective Gerald-Patrick-Thompson, an AI, weighs the evidence and decides who did it. The all-knowing AI is always right, even when it&#x27;s wrong.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">AI</span>
+          <span class="tag">Multiplayer</span>
+          <span class="tag">Global Game Jam 2023</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-thumb"><img src="images/hot-house.jpg" alt="Hot House key art: a man in a suit in a burning hot-house" loading="lazy"></div>
+      <div class="card-body">
+        <h3>Hot House</h3>
+        <p>A short narrative VR escape room. You are trapped in a luxurious hot-house against your will. How did you end up here? Who are you? And what does the Mafia have to do with it?</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Escape room</span>
+          <span class="tag">In development</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:j5xEwKWlz48" aria-label="Play video: Holy Burger"><img src="images/holy-burger.jpg" alt="Holy Burger VR maze" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:j5xEwKWlz48">Holy Burger</button></h3>
+        <p>Hired by the God of the Universe to fix the world they broke for fun, you search a maze for the pieces to build the ultimate symbol of wisdom and power: a burger.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Global Game Jam 2020</span>
+          <span class="tag">Medellín</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:eXfIVIMES60" aria-label="Play video: CryptoKitties AR"><img src="images/cryptokitties-ar.jpg" alt="CryptoKitties in augmented reality" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:eXfIVIMES60">CryptoKitties AR</button></h3>
+        <p>Take your CryptoKitties out of their blockchain universe and walk them around the real world in augmented reality.</p>
+        <div class="card-tags">
+          <span class="tag">AR</span>
+          <span class="tag">Blockchain</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="fb:https://www.facebook.com/brennan.hatton/videos/10208662150902476/" aria-label="Play video: Undead Mayhem"><img src="images/undead-mayhem.jpg" alt="Undead Mayhem title screen" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="fb:https://www.facebook.com/brennan.hatton/videos/10208662150902476/">Undead Mayhem</button></h3>
         <p>Survive waves of the undead in this action-packed game.</p>
         <div class="card-tags">
           <span class="tag">Action</span>
@@ -456,19 +560,107 @@
       </div>
     </article>
 
-    <!-- Hot House -->
     <article class="card">
-      <div class="card-thumb grad-hoon">&#127793;</div>
+      <div class="card-thumb"><img src="images/any-fighter.jpg" alt="Two fighters mid-kick in Any Fighter" loading="lazy"></div>
       <div class="card-body">
-        <h3><a href="https://life.brennanhatton.com/more/art/games/hot-house">Hot House</a></h3>
-        <p>A creative game project exploring the theme of a hot house.</p>
+        <h3>Any Fighter</h3>
+        <p>A 2D fighting game where half the battle is won in training before the fight. Made in 48 hours, playable in the browser.</p>
         <div class="card-tags">
-          <span class="tag">Creative</span>
+          <span class="tag">WebGL</span>
+          <span class="tag">Global Game Jam 2016</span>
+          <span class="tag">Berkeley</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:XJPFoq2zj3s" aria-label="Play video: Tremor Town"><img src="images/tremor-town.jpg" alt="Tremor Town gameplay" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:XJPFoq2zj3s">Tremor Town</button></h3>
+        <p>Build a town on the cheap, in a town famous for its earthquakes. Runner-up for best game in Sydney, then released on the iOS App Store.</p>
+        <div class="card-tags">
+          <span class="tag">iOS</span>
+          <span class="tag">Global Game Jam 2013</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:oWTmE9VDFOk" aria-label="Play video: Growth"><img src="images/growth.jpg" alt="Growth gameplay" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:oWTmE9VDFOk">Growth</button></h3>
+        <p>Made with three fellow first-year computer science students and an AIE artist. Awarded Best Overall Game at Wollongong.</p>
+        <div class="card-tags">
+          <span class="tag">Global Game Jam 2012</span>
+          <span class="tag">Award</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-thumb"><img src="images/white-flower.jpg" alt="Team Blackwolf at the Brisbane 48 hour game challenge" loading="lazy"></div>
+      <div class="card-body">
+        <h3>White Flower</h3>
+        <p>Team Blackwolf&#x27;s entry, winning Who Dares Wins at the Brisbane 48-hour game making challenge.</p>
+        <div class="card-tags">
+          <span class="tag">48hr challenge</span>
+          <span class="tag">2012</span>
+          <span class="tag">Award</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:psvVnMS1OE8" aria-label="Play video: Cold Hard Evidence"><img src="images/cold-hard-evidence.jpg" alt="Cold Hard Evidence gameplay" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:psvVnMS1OE8">Cold Hard Evidence</button></h3>
+        <p>Themes: winter, cheat and shoot. A private eye photographs cheating husbands in the snow, defrosting the camera lens for a clean shot. Made in 24 hours; won the UoW Winter Game Jam.</p>
+        <div class="card-tags">
+          <span class="tag">Game jam</span>
+          <span class="tag">2012</span>
+          <span class="tag">Award</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:K06N_GLvTIU" aria-label="Play video: Brennan Hatton&#x27;s Bouncer"><img src="images/bouncer.jpg" alt="Bouncer mobile game" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:K06N_GLvTIU">Brennan Hatton&#x27;s Bouncer</button></h3>
+        <p>My first mobile game, designed in high school at 15 and later released on iOS.</p>
+        <div class="card-tags">
+          <span class="tag">iOS</span>
+          <span class="tag">Mobile</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:2pwjTOFCH0w" aria-label="Play video: Papercopter"><img src="images/papercopter.jpg" alt="Papercopter gameplay" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:2pwjTOFCH0w">Papercopter</button></h3>
+        <p>Inspired by my high-school doodles: fly a helicopter and gun down the attackers to protect the house. Early-2000s flash style.</p>
+        <div class="card-tags">
+          <span class="tag">2D</span>
+          <span class="tag">Early work</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:OcHI0JXIOF4" aria-label="Play video: Violence and Helicopters"><img src="images/violence-and-helicopter.jpg" alt="Violence and Helicopters gameplay" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:OcHI0JXIOF4">Violence and Helicopters</button></h3>
+        <p>Unfinished, but with smooth, fun animation and a surprise at the end. Made between high school and uni.</p>
+        <div class="card-tags">
+          <span class="tag">2D</span>
+          <span class="tag">Early work</span>
         </div>
       </div>
     </article>
 
   </div>
+  <p class="archive"><b>More from the archive:</b> The Little Pixel Who Couldn&#x27;t Love, David&#x27;s Disco Labyrinth, Apocalyptic Overload, Tank Game, Tank Strategy, Box Climber, Box Builder, Car Game, The Towers (Hackagong winner, Best Overall Design), Yolo, <button type="button" class="video-link" data-video="yt:pQoKwPJz-zQ">VR Shoe Throwing</button>, Infinite Train prototype, Erin&#x27;s Space, <button type="button" class="video-link" data-video="yt:HA8ji-0AuRY">VR Drums</button>, VR for Support Workers, Yours and Owls VR360 installation, Antarctica Experience, Meta 1 SDK demos.</p>
 </section>
 
 <!-- ── AI & Creative Projects ── -->
@@ -478,9 +670,9 @@
 
     <!-- MindfulAI -->
     <article class="card">
-      <a class="card-thumb" href="/MindfulAI/"><img src="images/mindfulai.jpg" alt="Brennan presenting MindfulAI to a crowd at a temple art gallery" loading="lazy"></a>
+      <div class="card-thumb"><img src="images/mindfulai.jpg" alt="Brennan presenting MindfulAI to a crowd at a temple art gallery" loading="lazy"></div>
       <div class="card-body">
-        <h3><a href="/MindfulAI/">MindfulAI</a></h3>
+        <h3>MindfulAI</h3>
         <p>A mindfulness and meditation tool powered by AI. Uses speech recognition and text-to-speech for guided experiences.</p>
         <div class="card-tags">
           <span class="tag">AI</span>
@@ -494,7 +686,7 @@
     <article class="card">
       <div class="card-thumb grad-freedive">&#127917;</div>
       <div class="card-body">
-        <h3><a href="https://life.brennanhatton.com/more/art/games/ai-roleplaying">AI Roleplaying</a></h3>
+        <h3>AI Roleplaying</h3>
         <p>Explorations in AI-powered roleplaying experiences and interactive storytelling.</p>
         <div class="card-tags">
           <span class="tag">AI</span>
@@ -503,6 +695,17 @@
       </div>
     </article>
 
+    <article class="card">
+      <div class="card-thumb"><img src="images/ai-highschool-bias.jpg" alt="Two students talking with AI chat bubbles" loading="lazy"></div>
+      <div class="card-body">
+        <h3>AI in Highschool Biases</h3>
+        <p>Using AI to combat bias and bullying in high school. Proof of concept, 2023.</p>
+        <div class="card-tags">
+          <span class="tag">AI</span>
+          <span class="tag">Education</span>
+        </div>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -808,10 +1011,10 @@
 
 
     <article class="card">
-      <a class="card-thumb" href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/thetransrealityballpit"><img src="images/transreality-ball-pit.jpg" alt="Visitor in a VR headset lying in a ball pit" loading="lazy"></a>
+      <button type="button" class="card-thumb video-thumb" data-video="yt:TU5gIIoAuv0" aria-label="Play video: The Transreality Ball Pit"><img src="images/transreality-ball-pit.jpg" alt="Visitor in a VR headset lying in a ball pit" loading="lazy"><span class="play" aria-hidden="true"></span></button>
       <div class="card-body">
-        <h3><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/thetransrealityballpit">The Transreality Ball Pit</a></h3>
-        <p>A mixed-reality installation blending physical and virtual ball pits.</p>
+        <h3><button type="button" class="video-link" data-video="yt:TU5gIIoAuv0">The Transreality Ball Pit</button></h3>
+        <p>A mixed-reality installation blending physical and virtual ball pits, with Daniel Breda. First shown as <em>Art As Activity</em> at Project Contemporary ArtSpace Wollongong (2021), then installed in 10 locations around Australia.</p>
         <div class="card-tags">
           <span class="tag">VR</span>
           <span class="tag">Installation</span>
@@ -820,9 +1023,9 @@
     </article>
 
     <article class="card">
-      <a class="card-thumb" href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/marco-polo"><img src="images/marco-polo.jpg" alt="Visitor in a VR headset in front of a painted portal" loading="lazy"></a>
+      <button type="button" class="card-thumb video-thumb" data-video="yt:YwvsTzEuQlQ" aria-label="Play video: Marco Polo"><img src="images/marco-polo.jpg" alt="Visitor in a VR headset in front of a painted portal" loading="lazy"><span class="play" aria-hidden="true"></span></button>
       <div class="card-body">
-        <h3><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/marco-polo">Marco Polo</a></h3>
+        <h3><button type="button" class="video-link" data-video="yt:YwvsTzEuQlQ">Marco Polo</button></h3>
         <p>A VR experience inspired by the classic game of Marco Polo.</p>
         <div class="card-tags">
           <span class="tag">VR</span>
@@ -832,9 +1035,9 @@
     </article>
 
     <article class="card">
-      <a class="card-thumb" href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/tearism"><img src="images/tearism.jpg" alt="Person meditating in a VR headset on a cushion" loading="lazy"></a>
+      <button type="button" class="card-thumb video-thumb" data-video="yt:qGN6f0hD5Nc" aria-label="Play video: Tea(R)ism"><img src="images/tearism.jpg" alt="Person meditating in a VR headset on a cushion" loading="lazy"><span class="play" aria-hidden="true"></span></button>
       <div class="card-body">
-        <h3><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/tearism">Tea(R)ism</a></h3>
+        <h3><button type="button" class="video-link" data-video="yt:qGN6f0hD5Nc">Tea(R)ism</button></h3>
         <p>A contemplative VR tea ceremony experience.</p>
         <div class="card-tags">
           <span class="tag">VR</span>
@@ -844,9 +1047,9 @@
     </article>
 
     <article class="card">
-      <a class="card-thumb" href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/organic-and-mechanical-space"><img src="images/organic-mechanical-space.jpg" alt="Brennan sitting inside the painted Organic and Mechanical Space installation" loading="lazy"></a>
+      <button type="button" class="card-thumb video-thumb" data-video="yt:QtUrUdnEy44" aria-label="Play video: Organic/Mechanical Space"><img src="images/organic-mechanical-space.jpg" alt="Brennan sitting inside the painted Organic and Mechanical Space installation" loading="lazy"><span class="play" aria-hidden="true"></span></button>
       <div class="card-body">
-        <h3><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/organic-and-mechanical-space">Organic/Mechanical Space</a></h3>
+        <h3><button type="button" class="video-link" data-video="yt:QtUrUdnEy44">Organic/Mechanical Space</button></h3>
         <p>A VR exploration of organic and mechanical environments.</p>
         <div class="card-tags">
           <span class="tag">VR</span>
@@ -856,9 +1059,9 @@
     </article>
 
     <article class="card">
-      <a class="card-thumb" href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/antipodes-vr"><img src="images/antipodes-vr.jpg" alt="A poem floating in the Antipodes VR experience" loading="lazy"></a>
+      <button type="button" class="card-thumb video-thumb" data-video="yt:pgJIvpe4UdI" aria-label="Play video: Antipodes VR"><img src="images/antipodes-vr.jpg" alt="A poem floating in the Antipodes VR experience" loading="lazy"><span class="play" aria-hidden="true"></span></button>
       <div class="card-body">
-        <h3><a href="https://life.brennanhatton.com/more/career/software-development/virtual-reality-experiences/antipodes-vr">Antipodes VR</a></h3>
+        <h3><button type="button" class="video-link" data-video="yt:pgJIvpe4UdI">Antipodes VR</button></h3>
         <p>A virtual reality experience exploring the concept of antipodal points on Earth.</p>
         <div class="card-tags">
           <span class="tag">VR</span>
@@ -867,6 +1070,55 @@
       </div>
     </article>
 
+    <article class="card">
+      <div class="card-thumb"><img src="images/dr-empathy.jpg" alt="A person wearing a Vive VR headset" loading="lazy"></div>
+      <div class="card-body">
+        <h3>Dr Empathy</h3>
+        <p>VR empathy for disability care, built with design thinking. Won the UN Sustainable Development Goals hackathon, plus 2nd place and best teamwork at Thailand Friendly Design Social Inclusion.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Hackathon</span>
+          <span class="tag">Award</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:inJKVmxe5zY" aria-label="Play video: Australian Art Exhibit"><img src="images/australian-art-exhibit.jpg" alt="Virtual gallery of Australian art" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:inJKVmxe5zY">Australian Art Exhibit</button></h3>
+        <p>A VR gallery of work by John Brack, Albert Namatjira, Trevor Nickolls and Brett Whiteley. With Daniel Breda, made at Kingdom Hack 2016.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Art</span>
+          <span class="tag">2016</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-thumb"><img src="images/nan-tien-mindfulness.jpg" alt="A monk wearing a VR headset in a mountain landscape" loading="lazy"></div>
+      <div class="card-body">
+        <h3>Nan Tien Temple Mindfulness</h3>
+        <p>VR to teach meditation and mindfulness, with Nan Tien Temple.</p>
+        <div class="card-tags">
+          <span class="tag">VR</span>
+          <span class="tag">Mindfulness</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <button type="button" class="card-thumb video-thumb" data-video="yt:vFW8cOe5SEI" aria-label="Play video: Coachella Music Visualization"><img src="images/coachella-intel.jpg" alt="Stage visuals at Coachella" loading="lazy"><span class="play" aria-hidden="true"></span></button>
+      <div class="card-body">
+        <h3><button type="button" class="video-link" data-video="yt:vFW8cOe5SEI">Coachella Music Visualization</button></h3>
+        <p>Interactive music visualization at Coachella, with Intel.</p>
+        <div class="card-tags">
+          <span class="tag">Music</span>
+          <span class="tag">Interactive</span>
+        </div>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -902,6 +1154,40 @@
   </p>
   <p style="margin-top: 0.5rem;">&copy; Brennan Hatton</p>
 </footer>
+
+<dialog class="player" id="player" aria-label="Video">
+  <button type="button" class="close" aria-label="Close video">&times;</button>
+  <div class="frame"></div>
+</dialog>
+<script>
+(function () {
+  var dlg = document.getElementById('player');
+  var frame = dlg.querySelector('.frame');
+  function src(v) {
+    if (v.indexOf('yt:') === 0) return 'https://www.youtube-nocookie.com/embed/' + v.slice(3) + '?autoplay=1&rel=0';
+    if (v.indexOf('fb:') === 0) return 'https://www.facebook.com/plugins/video.php?autoplay=1&show_text=false&href=' + encodeURIComponent(v.slice(3));
+    return null;
+  }
+  function close() { frame.innerHTML = ''; if (dlg.open) dlg.close(); }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-video]');
+    if (!b) return;
+    var u = src(b.getAttribute('data-video'));
+    if (!u) return;
+    var f = document.createElement('iframe');
+    f.src = u;
+    f.title = (b.getAttribute('aria-label') || b.textContent || 'Video').trim();
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    frame.innerHTML = '';
+    frame.appendChild(f);
+    dlg.showModal();
+  });
+  dlg.querySelector('.close').addEventListener('click', close);
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) close(); });
+  dlg.addEventListener('close', function () { frame.innerHTML = ''; });
+})();
+</script>
 
 </body>
 </html>
