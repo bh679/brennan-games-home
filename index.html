@@ -214,6 +214,16 @@
       overflow: hidden;
     }
 
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Menus hidden for now — remove this rule to bring them back. */
+    .nav-links, .nav-toggle { display: none !important; }
+
     .card-body {
       padding: 1.25rem;
       flex: 1;
@@ -348,6 +358,20 @@
   <h2>Games</h2>
   <div class="grid">
 
+    <!-- Dungeon Train -->
+    <article class="card">
+      <a class="card-thumb" href="https://brennan.games/dungeontrain/"><img src="images/dungeon-train.jpg" alt="Dungeon Train crossing a jungle viaduct in Minecraft"></a>
+      <div class="card-body">
+        <h3><a href="https://brennan.games/dungeontrain/">Dungeon Train</a></h3>
+        <p>A Minecraft mod where you ride an endless, procedurally generated train through the overworld, the Nether and the End. Fight your way carriage to carriage and see how far you get on one life.</p>
+        <div class="card-tags">
+          <span class="tag">Minecraft</span>
+          <span class="tag">Adventure</span>
+          <span class="tag">Roguelike</span>
+        </div>
+      </div>
+    </article>
+
     <!-- CarkedIt Online -->
     <article class="card">
       <div class="card-thumb grad-carkedit">&#9760;</div>
@@ -428,19 +452,6 @@
         <div class="card-tags">
           <span class="tag">Interactive</span>
           <span class="tag">Story</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- Dungeon Train (external) -->
-    <article class="card">
-      <div class="card-thumb grad-chess">&#128123;</div>
-      <div class="card-body">
-        <h3><a href="http://dungeontrain.com">Dungeon Train</a></h3>
-        <p>An adventure game set aboard a dungeon train. Fight monsters and explore as you ride the rails.</p>
-        <div class="card-tags">
-          <span class="tag">Adventure</span>
-          <span class="tag">External</span>
         </div>
       </div>
     </article>
