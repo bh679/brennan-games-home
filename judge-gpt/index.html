@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JudgeGPT</title>
+  <meta name="description" content="JudgeGPT — a multiplayer courtroom game where an AI judge decided your fate. 2023–2024, by Brennan Hatton.">
+  <meta property="og:title" content="JudgeGPT">
+  <meta property="og:description" content="A multiplayer courtroom game where an AI judge decided your fate.">
+  <meta property="og:image" content="https://brennan.games/images/judgegpt.jpg">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e12;
+      --surface: #18181f;
+      --border: #2a2a3a;
+      --text: #e8e8f0;
+      --text-muted: #8888a0;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+    }
+    .nav-brand { font-weight: 700; font-size: 1.1rem; color: var(--text); }
+
+    .hero {
+      position: relative;
+      min-height: 420px;
+      display: flex;
+      align-items: flex-end;
+      background: url("hero.jpg") center / cover no-repeat;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(14,14,18,0.1) 30%, var(--bg));
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+    }
+    .hero h1 { font-size: clamp(2.4rem, 7vw, 3.6rem); line-height: 1.1; }
+    .hero p { font-size: 1.15rem; color: var(--text); max-width: 36rem; margin-top: 0.5rem; }
+
+    .status {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(24,24,31,0.85);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    main { max-width: 900px; margin: 0 auto; padding: 1rem 1rem 3rem; }
+    section { margin-top: 2.5rem; }
+    h2 { font-size: 1.3rem; margin-bottom: 0.75rem; }
+    p + p { margin-top: 0.75rem; }
+    .muted { color: var(--text-muted); }
+
+    ul.steps { list-style: none; display: grid; gap: 0.6rem; }
+    ul.steps li {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+    }
+
+    .video {
+      display: block;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .video img { display: block; width: 100%; height: auto; }
+    .video span {
+      position: absolute;
+      left: 1rem;
+      bottom: 1rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(14,14,18,0.85);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+    .gallery img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .timeline { list-style: none; border-left: 2px solid var(--border); padding-left: 1rem; }
+    .timeline li { margin-bottom: 0.6rem; }
+    .timeline b { color: var(--accent-light); font-weight: 600; margin-right: 0.4rem; }
+
+    .team { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.6rem; }
+    .team div {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.7rem 0.9rem;
+    }
+    .team b { display: block; }
+    .team span { color: var(--text-muted); font-size: 0.9rem; }
+
+    .links { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .links a {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.9rem;
+      color: var(--text);
+    }
+    .links a:hover { border-color: var(--accent); text-decoration: none; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 1rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 560px) {
+      .hero { min-height: 320px; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+      .gallery img:last-child { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/">brennan.games</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <h1>JudgeGPT</h1>
+    <p>The game where AI decides you or your friends' fate in the courtroom. Efficient and succinct justice, with all the bias and inaccuracy of AI.</p>
+    <span class="status">No longer running &middot; 2023&ndash;2024</span>
+  </div>
+</header>
+
+<main>
+
+  <section>
+    <h2>How it played</h2>
+    <ul class="steps">
+      <li>A futuristic small-claims court where AI has replaced the lawyers and the judge.</li>
+      <li>The AI decided what you were accused of. Then you got one chance to prove your innocence.</li>
+      <li>One live courtroom for everyone. If you weren't in the hearing you were in the audience, chatting and waiting your turn.</li>
+      <li>The judge, the verdicts and the drama were all voiced by AI.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Watch it</h2>
+    <a class="video" href="https://www.youtube.com/watch?v=Jq2GZEuAnx4" target="_blank" rel="noopener">
+      <img src="video.jpg" alt="JudgeGPT video: Decide your punishment">
+      <span>&#9654; Watch on YouTube</span>
+    </a>
+  </section>
+
+  <section>
+    <h2>The courtrooms</h2>
+    <p class="muted">Every hearing was held somewhere different.</p>
+    <div class="gallery" style="margin-top:0.75rem">
+      <img src="court-desert.jpg" alt="An empty AI courtroom in a desert wasteland" loading="lazy">
+      <img src="court-galaxy.jpg" alt="An empty AI courtroom in outer space" loading="lazy">
+      <img src="court-orbit.jpg" alt="An AI courtroom ringed by a galaxy" loading="lazy">
+    </div>
+  </section>
+
+  <section>
+    <h2>History</h2>
+    <ul class="timeline">
+      <li><b>Jul 2023</b>Two-player prototype, then networked multiplayer: everyone in one live case.</li>
+      <li><b>Aug 2023</b>AI-voiced judge and characters, plus a new look.</li>
+      <li><b>Oct 2024</b>Back online after six months down, with music, a spectator chatroom and searchable case archives.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Team</h2>
+    <div class="team">
+      <div><b>Brennan Hatton</b><span>Lead dev &amp; designer</span></div>
+      <div><b>Colin</b><span>The OG idea man</span></div>
+      <div><b>Faith Louise</b><span>The ideas woman</span></div>
+      <div><b>Dale</b><span>The music man</span></div>
+      <div><b>Tim Christie</b><span>The funny man</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Source</h2>
+    <div class="links">
+      <a href="https://github.com/bh679/JudgeGPT" target="_blank" rel="noopener">Server on GitHub</a>
+      <a href="https://github.com/bh679/JudgeGPT-Client" target="_blank" rel="noopener">Client on GitHub</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <a href="/">&larr; More games on brennan.games</a>
+</footer>
+
+</body>
+</html>
